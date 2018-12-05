@@ -146,6 +146,12 @@ func NewInt(x int64) *Int {
 	return new(Int).SetInt64(x)
 }
 
+// NewUInt allocates and returns a new UInt set to x.
+func NewUint(x uint64) *Int {
+	return new(Int).SetUint64(x)
+}
+
+
 // Set sets z to x and returns z.
 func (z *Int) Set(x *Int) *Int {
 	z.doinit()
@@ -213,6 +219,14 @@ func (z *Int) Mul(x, y *Int) *Int {
 	y.doinit()
 	z.doinit()
 	C.mpz_mul(&z.i[0], &x.i[0], &y.i[0])
+	return z
+}
+
+// MulUi sets z to the product x*y and returns z.
+func (z *Int) MulUi(x *Int, y uint64) *Int {
+	x.doinit()
+	z.doinit()
+	C.mpz_mul_ui(&z.i[0], &x.i[0], C.ulong(y))
 	return z
 }
 
