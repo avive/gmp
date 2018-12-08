@@ -151,7 +151,6 @@ func NewUint(x uint64) *Int {
 	return new(Int).SetUint64(x)
 }
 
-
 // Set sets z to x and returns z.
 func (z *Int) Set(x *Int) *Int {
 	z.doinit()
@@ -729,6 +728,29 @@ func (z *Int) Exp(x, y, m *Int) *Int {
 		m.doinit()
 		C.mpz_powm(&z.i[0], &x.i[0], &y.i[0], &m.i[0])
 	}
+	return z
+}
+
+//  Executes mpz_gcdext on input
+func (z *Int) GCDExt(x, y, a, b *Int) *Int {
+	z.doinit()
+	a.doinit()
+	b.doinit()
+
+	if x != nil {
+		x.doinit()
+	} else {
+		x = _Int0
+	}
+
+	if y != nil {
+		y.doinit()
+	} else {
+		y = _Int0
+	}
+
+	C.mpz_gcdext(&z.i[0], &x.i[0], &y.i[0], &a.i[0], &b.i[0])
+
 	return z
 }
 
